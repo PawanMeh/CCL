@@ -1,0 +1,20 @@
+# -*- coding: utf-8 -*-
+# Copyright (c) 2017, openetech and contributors
+# For license information, please see license.txt
+
+from __future__ import unicode_literals
+import frappe
+from frappe.model.document import Document
+from frappe import utils,_,msgprint
+
+class LotSeries(Document):
+	def validate(self):
+		current_series = frappe.db.sql("""select name 
+								from `tabLot Series`
+			 					where active = 1 and name not in (%s)""",(self.name))
+		if current_series:
+			name = current_series[0][0]
+			if name == self.name:
+				pass
+			else:
+				frappe.throw(_("There can be only one active series at a time"))
