@@ -49,7 +49,6 @@ class GreenLot(Document):
 					frappe.throw(_("Lot ID {0} already exists").format(self.lot))
 		else:
 			update_lot_no()
-		self.name = self.lot
 
 	def validate(self):
 		if not self.lot:
@@ -60,8 +59,6 @@ class GreenLot(Document):
 			if veh_ref.date > nowdate():
 				frappe.throw(_("Date entered cannot be greater than today's date"))
 			diff = frappe.utils.date_diff(nowdate(), veh_ref.date)
-			print ("hi")
-			print (diff)
 			if diff > 30 and not self.confirm_days_old:
 				frappe.throw(_("Days Old {0} is greater than 30 days. Check Confirm Days Old to confirm.").format(diff))
 			date_str = dateutils.parse_date(veh_ref.date)
